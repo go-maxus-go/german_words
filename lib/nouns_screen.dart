@@ -45,7 +45,7 @@ class _NounsScreenState extends State<NounsScreen> {
     final theme = Theme.of(context);
     final buttonWidth = 56.0;
     return Scaffold(
-      appBar: AppBar(title: Text("Nouns")),
+      appBar: AppBar(title: Text("nouns")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,

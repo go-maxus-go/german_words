@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'nouns_screen.dart';
-import 'adjectives_screen.dart';
+import 'common_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -28,10 +28,28 @@ class _MainScreenState extends State<MainScreen> {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return AdjectivessScreen();
+                  return CommonScreen("adjectives");
                 }));
               },
               child: Text("Adjectives"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return CommonScreen("verbs");
+                }));
+              },
+              child: Text("Verbs"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return CommonScreen("other");
+                }));
+              },
+              child: Text("Other"),
             ),
           ],
         ),

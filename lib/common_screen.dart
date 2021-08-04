@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'util.dart';
 
-class AdjectivessScreen extends StatefulWidget {
+class CommonScreen extends StatefulWidget {
+  final String name;
+  CommonScreen(this.name);
   @override
-  _AdjectivessScreenState createState() => _AdjectivessScreenState();
+  _CommonScreenState createState() => _CommonScreenState();
 }
 
 class Word {
@@ -16,7 +18,7 @@ class Word {
   });
 }
 
-class _AdjectivessScreenState extends State<AdjectivessScreen> {
+class _CommonScreenState extends State<CommonScreen> {
   List<Word> _words = [];
   int index = 0;
 
@@ -34,8 +36,9 @@ class _AdjectivessScreenState extends State<AdjectivessScreen> {
     final theme = Theme.of(context);
     final buttonWidth = 56.0;
     return Scaffold(
-      appBar: AppBar(title: Text("Adjectives")),
-      body: Center(
+      appBar: AppBar(title: Text(widget.name)),
+      body: Container(
+        padding: EdgeInsets.only(left: 16, right: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -45,13 +48,19 @@ class _AdjectivessScreenState extends State<AdjectivessScreen> {
                 style: theme.textTheme.headline5?.copyWith(
                   color: _showWord ? null : Color(0),
                 ),
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8),
               Text(
-                "( ${_words[index].translation} )",
+                "${_words[index].translation}",
                 style: theme.textTheme.subtitle1?.copyWith(
                   color: _showTranslation ? null : Color(0),
                 ),
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8),
               IconButton(
@@ -164,7 +173,7 @@ class _AdjectivessScreenState extends State<AdjectivessScreen> {
   }
 
   void _loadWords() async {
-    final text = await rootBundle.loadString('res/adjectives.txt');
+    final text = await rootBundle.loadString('res/${widget.name}.txt');
     final lines = text.split("\n");
     for (final line in lines) {
       final lineParts = line.split("|");

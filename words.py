@@ -1,4 +1,4 @@
-f = open("adjectives.txt", "rt")
+f = open("other.txt", "rt")
 words = f.readlines()
 f.close()
 for i in range(len(words)):
@@ -10,6 +10,6 @@ for i in range(len(words)):
     word = "|".join(word)
     words[i] = word
 
-f = open("adjectives2.txt", "wt")
+f = open("other2.txt", "wt")
 f.writelines(words)
 f.close()
