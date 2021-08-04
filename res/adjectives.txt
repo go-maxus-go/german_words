@@ -1,0 +1,250 @@
+glatt|slippery
+abenteuerlich|adventurous
+abhängig|dependent
+aggressiv|aggressive
+ähnlich|similar
+ahnungslos|clueless
+aktiv|active
+allein|alone
+alt|old
+anpassungsfähig|adaptable
+anständig|decent
+ärgerlich|annoying
+arm|poor
+art|kind
+attraktiv|attractive
+aufgeklärt|enlightened
+aufgeregt|excited, upset, nervous
+aufgeschlossen|open-minded
+aufrichtig|sincere, genuine, candid
+blass|pale
+begabt|gifted, talented
+begeistert|excited, enthusiastic, thrilled
+berühmt|famous
+beliebt, populär|popular
+bestimmt|special, certain
+besser|better
+bequem|comfortable
+bescheiden|modest, humble
+beste|best
+bezaubernd|enchanting, fascinating
+billig|cheap, inexpensive
+blöd|stupid, ignorant
+blondine|blond
+boshaft|malicious, mean
+brav|well-behaved, good
+charmant|charming
+dankbar|grateful, thankful
+dick|thick
+direkt|direct, straight
+doof, dumm|stupid, dumb
+dunkel|dark
+dünn|thin
+ehrgeizig|ambitious
+ehrlich|honest
+eifersüchtig|jealous
+einfach|simple, plain, easy
+eingebildet|conceited, vain
+einmalig|unique
+einsam|lonely
+ekelhaft|nasty, detestable
+eklig|disgusting, gross
+empfindlich|sensitive
+eng|narrow, close
+engagiert|dedicated, committed
+engstirnig|narrow-minded
+entscheidend|decisive
+entspannend|laidback
+erfolgreich|successful
+ernst|serious
+erste|first
+erstklassig|first-class, high-quality, topnotch
+falsch|wrong, false
+fantastisch|fantastic
+faszinierend|fascinating
+faul|lazy
+feig|cowardly
+fein|fine
+fest|solid, strong, firm
+fett|fat
+feigling|coward
+fleißig|diligent, hard-working, industrious
+fortgeschritten|advanced
+frech|naughty, cheeky, sassy
+frei|free
+fremd|foreign, strange
+freundlich|friendly, kind
+froh|happy
+fröhlich|cheerful
+fromm|pious
+früh|early
+ganz|whole
+gastfreundlich|hospitable
+gebildet|educated, cultured
+geduldig|patient
+gefährlich|dangerous
+gefühlvoll|sensitive, emotional
+geistreich|witty, brilliant
+geizig|stingy, cheap
+gemein|low, rude, vulgar
+gemeinsam|common, mutual
+gemütlich|pleasant, cozy
+genial|ingenious, brilliant
+gerecht|just, righteous
+geschätzt|dear, valued
+gescheit|clever, bright
+geschickt|skillful
+geschwätzig|talkative, chatty
+gesellig|sociable, friendly
+gesund|healthy
+gierig|greedy
+glaubwürdig|credible, believable
+gleich|same, right away, just
+gleichzeitig|simultaneous
+glücklich|happy, lucky, blessed
+grausam|cruel
+grob|coarse, uncouth, rude
+großzügig|generous
+groß|big, large, tall
+grün|green
+gut|good, well
+gut angezogen|well-dressed
+gut gelaunt|cheerful, in a good mood
+halb|half
+halsstarrig|stubborn
+hart|hard, tough
+hartnäckig|hard-headed, stubborn
+hässlich|ugly
+häufig|frequent
+heiß|hot
+heiter|cheerful
+hell|bright, vivid
+hemmungslos|uninhibited, unrestrained
+herrlich|wonderful, magnificent, marvelous
+herzlos|heartless, unfeeling
+hilfreich|helpful
+hinterlistig|deceitful, treacherous
+hoch|high
+hochmütig|haughty, proud
+hochnäsig|snooty, stuck up
+höflich|polite
+hübsch|pretty, handsome
+hundemüde|dog-tired
+hungrig|hungry
+idealistisch|idealistic
+intelligent|intelligent
+interessant|interesting
+intolerant|intolerant
+jung|young
+kalt|cold, unfriendly
+kindisch|childish
+kindlich|childlike
+klar|clear
+klasse, toll, super|great, super
+klein|small, little, short
+kleinlich|petty, nit-picky
+klug|smart, clever
+komisch|funny, comical, odd
+kompliziert|complicated
+konservativ|conservative
+kontaktfreudig|sociable, outgoing
+kräftig|strong
+krank|sick
+kreativ|creative
+kritisch|critical
+krumm|crooked, hunched, bent
+labil|unstable, frail
+lang|long
+langsam|slow
+langweilig|boring
+launisch|moody, temperamental
+laut|loud, rowdy
+lebendig|alive, lively
+leicht|light, easy
+leidenschaftlich|passionate
+leise|quiet, soft
+letzte|last
+lieb|dear, beloved
+liebenswürdig|lovable, amiable
+lustig|funny
+merkwürdig|unusual, strange
+misstrauisch|mistrustful, distrustful
+modisch|fashionable, stylish
+mollig|plump, chubby
+möglich|possible
+moralisch|moral, ethical
+mutig|brave
+nächste|next
+nachlässig|careless, negligent
+nah|near
+naß|wet
+neidisch|envious
+nervös|nervous
+nett|kind, nice (person)
+neu|new
+neugierig|curious
+niedergeschlagen|depressed, dejected
+niedlich|cute
+niedrig|low
+notwendig|necessary
+oberflächlich|superficial, shallow
+offen|open
+öffentlich|public
+optimistisch|optimistic
+ordentlich|orderly
+passiv|passive
+parteiisch|partial, biased, one-sided
+peinlich|embarrassing
+pessimistisch|pessimistic
+praktisch|practical
+privat|private
+pünktlich|punctual, prompt
+radikal|radical, revolutionary
+raffiniert|refined, elegant
+rauh|rough
+rebellisch|rebellious
+rechthaberisch|self-opinionated
+redlich|honest
+reich|rich
+reif|mature
+rein|pure, clean, clear
+religiös|religious
+richtig|correct, proper
+riesig|huge
+romantisch|romantic
+rot|red
+rücksichtslos|ruthless, inconsiderate
+rücksichtsvoll|considerate
+ruhig|calm
+sauber|clean
+sauer|angry, sour
+schick|chic, stylish, fancy
+schlampig|messy, sloppy
+schlau|clever, cunning
+schlecht, schlimm|bad, awful
+schmutzig|dirty, filthy, soiled
+schnell|fast, quick
+schön|beautiful, pretty, nice
+schüchtern|shy
+schwach|weak, frail
+schwarz|black
+schwer, schwierig|difficult, heavy
+schwerfällig|cumbersome, heavy, sluggish
+schwermütig|gloomy, melancholic
+selbstlos|unselfish
+selbstsicher|self-confident
+selbstsüchtig|selfish
+selten|rare
+seltsam|strange, weird
+sensationell|sensational
+sensibel|sensitive
+sicher|safe, secure, certainly
+sorgenlos, sorgenfrei|carefree
+sorgfältig|careful
+spät|late
+spontan|spontaneous
+sportlich|athletic
+spöttisch|mocking, scornful
+ständig|constant
+stark|strong, powerful
+stolz (auf)|proud (of)

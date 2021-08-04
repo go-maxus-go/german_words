@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'nouns_screen.dart';
+import 'adjectives_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return NounsScreen();
+                  return AdjectivessScreen();
                 }));
               },
               child: Text("Adjectives"),

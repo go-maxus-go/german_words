@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'util.dart';
 
 class NounsScreen extends StatefulWidget {
   @override
@@ -318,7 +318,7 @@ class _NounsScreenState extends State<NounsScreen> {
   }
 
   void _loadWords() async {
-    final text = await rootBundle.loadString('res/german_words.txt');
+    final text = await rootBundle.loadString('res/nouns.txt');
     final lines = text.split("\n");
     for (final line in lines) {
       final lineParts = line.split("|");
@@ -341,9 +341,6 @@ class _NounsScreenState extends State<NounsScreen> {
 
   void _openInGoogle() {
     final word = _words[index];
-    final text = "${word.word}";
-    final url =
-        "https://translate.google.com/?sl=de&tl=en&text=$text&op=translate";
-    launch(url);
+    openTranslator(word.word);
   }
 }
