@@ -3,6 +3,12 @@ import 'nouns_screen.dart';
 import 'common_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  final bool isDarkMode;
+  final Function toggleDarkMode;
+  MainScreen({
+    required this.isDarkMode,
+    required this.toggleDarkMode,
+  });
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -11,9 +17,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        padding: EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ElevatedButton(
               onPressed: () {
@@ -24,6 +32,7 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: Text("Nouns"),
             ),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context)
@@ -33,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: Text("Adjectives"),
             ),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context)
@@ -42,6 +52,7 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: Text("Verbs"),
             ),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context)
@@ -50,6 +61,11 @@ class _MainScreenState extends State<MainScreen> {
                 }));
               },
               child: Text("Other"),
+            ),
+            SizedBox(height: 64),
+            IconButton(
+              onPressed: () => widget.toggleDarkMode(),
+              icon: Icon(widget.isDarkMode ? Icons.wb_sunny : Icons.nightlight),
             ),
           ],
         ),

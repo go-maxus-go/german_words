@@ -73,7 +73,7 @@ class _NounsScreenState extends State<NounsScreen> {
               ),
               SizedBox(height: 8),
               Text(
-                "( ${_words[index].translation} )",
+                "${_words[index].translation}",
                 style: theme.textTheme.subtitle1?.copyWith(
                   color: _showTranslation ? null : Color(0),
                 ),
@@ -85,7 +85,7 @@ class _NounsScreenState extends State<NounsScreen> {
                 icon: Icon(Icons.translate),
               ),
             ],
-            SizedBox(height: 64),
+            SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
