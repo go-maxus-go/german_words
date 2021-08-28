@@ -1,29 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'util.dart';
+import 'database.dart';
+import 'edit_noun_screen.dart';
 
 class NounsScreen extends StatefulWidget {
   @override
   _NounsScreenState createState() => _NounsScreenState();
 }
 
-class Word {
-  final String article;
-  final String word;
-  final String plural;
-  final String translation;
-  Word({
-    required this.article,
-    required this.word,
-    required this.plural,
-    required this.translation,
-  });
-}
-
 class _NounsScreenState extends State<NounsScreen> {
-  List<Word> _allWords = [];
-  List<Word> _words = [];
-  int index = 0;
+  List<int> _indices = [];
+  int _index = 0;
 
   bool _showArticle = true;
   bool _showWord = true;
@@ -34,55 +21,152 @@ class _NounsScreenState extends State<NounsScreen> {
   bool _showDie = true;
   bool _showDas = true;
 
+  bool _showLearned = false;
+  bool _showToLearn = false;
+
   @override
   void initState() {
     super.initState();
-    _loadWords();
+    _updateIndices();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final buttonWidth = 56.0;
+
+    final words = Database().sections['nouns']!;
+    Noun? word = _indices.isNotEmpty ? words[_indices[_index]] : null;
+
     return Scaffold(
-      appBar: AppBar(title: Text("nouns")),
+      appBar: AppBar(
+        title: Text("nouns"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showToLearn = !_showToLearn;
+                _updateIndices();
+              });
+            },
+            color: _showToLearn ? Colors.red : null,
+            icon: Icon(Icons.school),
+          ),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showLearned = !_showLearned;
+                _updateIndices();
+              });
+            },
+            color: _showLearned ? Colors.green : null,
+            icon: Icon(Icons.check_circle),
+          ),
+          SizedBox(width: 32),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _indices.shuffle();
+              });
+            },
+            icon: Icon(Icons.casino),
+          ),
+          IconButton(
+            onPressed: () async {
+              if (_indices.isNotEmpty) {
+                final index = _indices[_index];
+                final noun = Database().sections['nouns']![index]!;
+                await Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return EditNounScreen(noun: noun, index: index);
+                }));
+                setState(() {
+                  _updateIndex();
+                });
+              }
+            },
+            icon: Icon(Icons.edit),
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (_words.isNotEmpty) ...[
+            if (word != null) ...[
               Text(
-                "${_words[index].article}",
+                "${word.article}",
                 style: theme.textTheme.headline5?.copyWith(
                   color: _showArticle ? null : Color(0),
                 ),
               ),
               SizedBox(height: 4),
               Text(
-                "${_words[index].word}",
+                "${word.word}",
                 style: theme.textTheme.headline5?.copyWith(
                   color: _showWord ? null : Color(0),
                 ),
               ),
               SizedBox(height: 4),
               Text(
-                "${_words[index].plural}",
+                "${word.plural}",
                 style: theme.textTheme.headline5?.copyWith(
                   color: _showPlural ? null : Color(0),
                 ),
               ),
               SizedBox(height: 8),
               Text(
-                "${_words[index].translation}",
+                "${word.translation}",
                 style: theme.textTheme.subtitle1?.copyWith(
                   color: _showTranslation ? null : Color(0),
                 ),
               ),
               SizedBox(height: 8),
-              IconButton(
-                onPressed: _openInGoogle,
-                color: Colors.blue,
-                icon: Icon(Icons.translate),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.school),
+                    color: word.toLearn ? Colors.red : Colors.grey,
+                    onPressed: () {
+                      if (_indices.isNotEmpty) {
+                        setState(() {
+                          final json = word.toJson();
+                          json[Word.toLearnKey] = !word.toLearn;
+                          json[Word.learnedKey] = false;
+                          final newNoun = Noun.fromJson(json);
+                          final index = _indices[_index];
+                          final nouns = _getNouns();
+                          nouns[index] = newNoun;
+                          Database().saveSection('nouns');
+                        });
+                      }
+                    },
+                  ),
+                  IconButton(
+                    onPressed: _openInGoogle,
+                    color: Colors.blue,
+                    icon: Icon(Icons.translate),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.check_circle),
+                    color: word.learned ? Colors.green : Colors.grey,
+                    onPressed: () {
+                      if (_indices.isNotEmpty) {
+                        setState(() {
+                          final json = word.toJson();
+                          json[Word.learnedKey] = !word.learned;
+                          json[Word.toLearnKey] = false;
+                          final newNoun = Noun.fromJson(json);
+                          final index = _indices[_index];
+                          final nouns = _getNouns();
+                          nouns[index] = newNoun;
+                          Database().saveSection('nouns');
+                        });
+                      }
+                    },
+                  ),
+                ],
               ),
             ],
             SizedBox(height: 32),
@@ -241,35 +325,53 @@ class _NounsScreenState extends State<NounsScreen> {
     );
   }
 
+  List<dynamic> _getNouns() {
+    return Database().sections['nouns']!;
+  }
+
   void _toggleShowDer() {
     _showDer = !_showDer;
-    _updateWords();
-    _nextWord();
+    _updateIndices();
   }
 
   void _toggleShowDie() {
     _showDie = !_showDie;
-    _updateWords();
-    _nextWord();
+    _updateIndices();
   }
 
   void _toggleShowDas() {
     _showDas = !_showDas;
-    _updateWords();
-    _nextWord();
+    _updateIndices();
   }
 
-  void _updateWords() {
+  void _updateIndices() {
     setState(() {
-      _words.clear();
-      for (final word in _allWords) {
-        if ((word.article == "Der" && _showDer) ||
+      _indices.clear();
+      final words = Database().sections['nouns']!;
+
+      for (int i = 0; i < words.length; ++i) {
+        final word = words[i];
+        final rightArticle = (word.article == "Der" && _showDer) ||
             (word.article == "Die" && _showDie) ||
-            (word.article == "Das" && _showDas)) {
-          _words.add(word);
+            (word.article == "Das" && _showDas);
+        final passFilter = (word.learned && word.learned == _showLearned) ||
+            (word.toLearn && word.toLearn == _showToLearn) ||
+            (word.learned == _showLearned && word.toLearn == _showToLearn);
+        if (passFilter && rightArticle) {
+          _indices.add(i);
         }
       }
+
+      _updateIndex();
     });
+  }
+
+  void _updateIndex() {
+    if (_indices.isNotEmpty) {
+      _index = _index % _indices.length;
+    } else {
+      _index = 0;
+    }
   }
 
   void _toggleShowArticle() {
@@ -298,49 +400,23 @@ class _NounsScreenState extends State<NounsScreen> {
 
   void _nextWord() {
     setState(() {
-      index++;
-      if (index >= _words.length) {
-        index = 0;
-      }
+      _index++;
+      _updateIndex();
     });
   }
 
   void _prevWord() {
     setState(() {
-      index--;
-      if (index < 0) {
-        index = _words.length - 1;
-      }
-      if (index < 0) {
-        index = 0;
-      }
+      _index--;
+      _updateIndex();
     });
   }
 
-  void _loadWords() async {
-    final text = await rootBundle.loadString('res/nouns.txt');
-    final lines = text.split("\n");
-    for (final line in lines) {
-      final lineParts = line.split("|");
-      if (lineParts.length == 3) {
-        final translation = lineParts[0];
-        final article = lineParts[1].substring(0, 3);
-        final word = lineParts[1].substring(4);
-        final plural = lineParts[2];
-        _allWords.add(Word(
-          article: article,
-          word: word,
-          plural: plural,
-          translation: translation,
-        ));
-      }
-    }
-    _allWords.shuffle();
-    _updateWords();
-  }
-
   void _openInGoogle() {
-    final word = _words[index];
-    openTranslator(word.word);
+    if (_indices.isNotEmpty) {
+      final words = Database().sections['nouns']!;
+      final word = words[_indices[_index]];
+      openTranslator(word.word);
+    }
   }
 }

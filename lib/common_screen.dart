@@ -1,75 +1,163 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'util.dart';
+import 'database.dart';
+import 'edit_word_screen.dart';
 
 class CommonScreen extends StatefulWidget {
-  final String name;
-  CommonScreen(this.name);
+  final String section;
+  CommonScreen(this.section);
   @override
   _CommonScreenState createState() => _CommonScreenState();
 }
 
-class Word {
-  final String word;
-  final String translation;
-  Word({
-    required this.word,
-    required this.translation,
-  });
-}
-
 class _CommonScreenState extends State<CommonScreen> {
-  List<Word> _words = [];
-  int index = 0;
+  List<int> _indices = [];
+  int _index = 0;
 
   bool _showWord = true;
   bool _showTranslation = true;
 
+  bool _showLearned = false;
+  bool _showToLearn = false;
+
   @override
   void initState() {
     super.initState();
-    _loadWords();
+    _updateIndices();
+  }
+
+  List<dynamic> _getWords() {
+    return Database().sections[widget.section]!;
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final buttonWidth = 56.0;
+
+    final words = _getWords();
+    Word? word = _indices.isNotEmpty ? words[_indices[_index]] : null;
+
     return Scaffold(
-      appBar: AppBar(title: Text(widget.name)),
-      body: Container(
-        padding: EdgeInsets.only(left: 16, right: 16),
+      appBar: AppBar(
+        title: Text(widget.section),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showToLearn = !_showToLearn;
+                _updateIndices();
+              });
+            },
+            color: _showToLearn ? Colors.red : null,
+            icon: Icon(Icons.school),
+          ),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showLearned = !_showLearned;
+                _updateIndices();
+              });
+            },
+            color: _showLearned ? Colors.green : null,
+            icon: Icon(Icons.check_circle),
+          ),
+          SizedBox(width: 32),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _indices.shuffle();
+              });
+            },
+            icon: Icon(Icons.casino),
+          ),
+          IconButton(
+            onPressed: () async {
+              if (_indices.isNotEmpty) {
+                final index = _indices[_index];
+                final word = _getWords()[index]!;
+                await Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return EditWordScreen(
+                    word: word,
+                    section: widget.section,
+                    index: index,
+                  );
+                }));
+                setState(() {
+                  _updateIndex();
+                });
+              }
+            },
+            icon: Icon(Icons.edit),
+          ),
+        ],
+      ),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (_words.isNotEmpty) ...[
+            if (word != null) ...[
               Text(
-                "${_words[index].word}",
+                "${word.word}",
                 style: theme.textTheme.headline5?.copyWith(
                   color: _showWord ? null : Color(0),
                 ),
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8),
               Text(
-                "${_words[index].translation}",
+                "${word.translation}",
                 style: theme.textTheme.subtitle1?.copyWith(
                   color: _showTranslation ? null : Color(0),
                 ),
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8),
-              IconButton(
-                onPressed: _openInGoogle,
-                color: Colors.blue,
-                icon: Icon(Icons.translate),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.school),
+                    color: word.toLearn ? Colors.red : Colors.grey,
+                    onPressed: () {
+                      if (_indices.isNotEmpty) {
+                        setState(() {
+                          final json = word.toJson();
+                          json[Word.toLearnKey] = !word.toLearn;
+                          json[Word.learnedKey] = false;
+                          final newWord = Word.fromJson(json);
+                          final index = _indices[_index];
+                          _getWords()[index] = newWord;
+                          Database().saveSection(widget.section);
+                        });
+                      }
+                    },
+                  ),
+                  IconButton(
+                    onPressed: _openInGoogle,
+                    color: Colors.blue,
+                    icon: Icon(Icons.translate),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.check_circle),
+                    color: word.learned ? Colors.green : Colors.grey,
+                    onPressed: () {
+                      if (_indices.isNotEmpty) {
+                        setState(() {
+                          final json = word.toJson();
+                          json[Word.learnedKey] = !word.learned;
+                          json[Word.toLearnKey] = false;
+                          final newWord = Word.fromJson(json);
+                          final index = _indices[_index];
+                          _getWords()[index] = newWord;
+                          Database().saveSection(widget.section);
+                        });
+                      }
+                    },
+                  ),
+                ],
               ),
             ],
-            SizedBox(height: 64),
+            SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -139,6 +227,33 @@ class _CommonScreenState extends State<CommonScreen> {
     );
   }
 
+  void _updateIndices() {
+    setState(() {
+      _indices.clear();
+      final words = _getWords();
+
+      for (int i = 0; i < words.length; ++i) {
+        final word = words[i];
+        final passFilter = (word.learned && word.learned == _showLearned) ||
+            (word.toLearn && word.toLearn == _showToLearn) ||
+            (word.learned == _showLearned && word.toLearn == _showToLearn);
+        if (passFilter) {
+          _indices.add(i);
+        }
+      }
+
+      _updateIndex();
+    });
+  }
+
+  void _updateIndex() {
+    if (_indices.isNotEmpty) {
+      _index = _index % _indices.length;
+    } else {
+      _index = 0;
+    }
+  }
+
   void _toggleShowWord() {
     setState(() {
       _showWord = !_showWord;
@@ -153,45 +268,23 @@ class _CommonScreenState extends State<CommonScreen> {
 
   void _nextWord() {
     setState(() {
-      index++;
-      if (index >= _words.length) {
-        index = 0;
-      }
+      _index++;
+      _updateIndex();
     });
   }
 
   void _prevWord() {
     setState(() {
-      index--;
-      if (index < 0) {
-        index = _words.length - 1;
-      }
-      if (index < 0) {
-        index = 0;
-      }
+      _index--;
+      _updateIndex();
     });
   }
 
-  void _loadWords() async {
-    final text = await rootBundle.loadString('res/${widget.name}.txt');
-    final lines = text.split("\n");
-    for (final line in lines) {
-      final lineParts = line.split("|");
-      if (lineParts.length == 2) {
-        final translation = lineParts[1];
-        final word = lineParts[0];
-        _words.add(Word(
-          word: word,
-          translation: translation,
-        ));
-      }
-    }
-    _words.shuffle();
-    setState(() {});
-  }
-
   void _openInGoogle() {
-    final word = _words[index];
-    openTranslator(word.word);
+    if (_indices.isNotEmpty) {
+      final words = _getWords();
+      final word = words[_indices[_index]];
+      openTranslator(word.word);
+    }
   }
 }
