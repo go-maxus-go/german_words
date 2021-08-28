@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'nouns_screen.dart';
 import 'common_screen.dart';
+import 'database.dart';
 
 class MainScreen extends StatefulWidget {
   final bool isDarkMode;
@@ -14,6 +15,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Database().loadAllSections();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
