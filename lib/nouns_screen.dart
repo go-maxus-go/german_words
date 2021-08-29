@@ -90,236 +90,240 @@ class _NounsScreenState extends State<NounsScreen> {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (word != null) ...[
-              Text(
-                "${word.article}",
-                style: theme.textTheme.headline5?.copyWith(
-                  color: _showArticle ? null : Color(0),
+        child: Container(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (word != null) ...[
+                Text(
+                  "${word.article}",
+                  style: theme.textTheme.headline5?.copyWith(
+                    color: _showArticle ? null : Color(0),
+                  ),
                 ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                "${word.word}",
-                style: theme.textTheme.headline5?.copyWith(
-                  color: _showWord ? null : Color(0),
+                SizedBox(height: 4),
+                Text(
+                  "${word.word}",
+                  style: theme.textTheme.headline5?.copyWith(
+                    color: _showWord ? null : Color(0),
+                  ),
                 ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                "${word.plural}",
-                style: theme.textTheme.headline5?.copyWith(
-                  color: _showPlural ? null : Color(0),
+                SizedBox(height: 4),
+                Text(
+                  "${word.plural}",
+                  style: theme.textTheme.headline5?.copyWith(
+                    color: _showPlural ? null : Color(0),
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                "${word.translation}",
-                style: theme.textTheme.subtitle1?.copyWith(
-                  color: _showTranslation ? null : Color(0),
+                SizedBox(height: 8),
+                Text(
+                  "${word.translation}",
+                  style: theme.textTheme.subtitle1?.copyWith(
+                    color: _showTranslation ? null : Color(0),
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.school),
+                      color: word.toLearn ? Colors.red : Colors.grey,
+                      onPressed: () {
+                        if (_indices.isNotEmpty) {
+                          setState(() {
+                            final json = word.toJson();
+                            json[Word.toLearnKey] = !word.toLearn;
+                            json[Word.learnedKey] = false;
+                            final newNoun = Noun.fromJson(json);
+                            final index = _indices[_index];
+                            final nouns = _getNouns();
+                            nouns[index] = newNoun;
+                            Database().saveSection('nouns');
+                          });
+                        }
+                      },
+                    ),
+                    IconButton(
+                      onPressed: _openInGoogle,
+                      color: Colors.blue,
+                      icon: Icon(Icons.translate),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.check_circle),
+                      color: word.learned ? Colors.green : Colors.grey,
+                      onPressed: () {
+                        if (_indices.isNotEmpty) {
+                          setState(() {
+                            final json = word.toJson();
+                            json[Word.learnedKey] = !word.learned;
+                            json[Word.toLearnKey] = false;
+                            final newNoun = Noun.fromJson(json);
+                            final index = _indices[_index];
+                            final nouns = _getNouns();
+                            nouns[index] = newNoun;
+                            Database().saveSection('nouns');
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
+              SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.school),
-                    color: word.toLearn ? Colors.red : Colors.grey,
-                    onPressed: () {
-                      if (_indices.isNotEmpty) {
-                        setState(() {
-                          final json = word.toJson();
-                          json[Word.toLearnKey] = !word.toLearn;
-                          json[Word.learnedKey] = false;
-                          final newNoun = Noun.fromJson(json);
-                          final index = _indices[_index];
-                          final nouns = _getNouns();
-                          nouns[index] = newNoun;
-                          Database().saveSection('nouns');
-                        });
-                      }
-                    },
+                  OutlinedButton(
+                    onPressed: _toggleShowDer,
+                    child: SizedBox(
+                      width: 72,
+                      child: Center(
+                        child: Text(
+                          "Der",
+                          style: TextStyle(
+                            color: _showDer ? null : Colors.grey,
+                            decoration:
+                                _showDer ? null : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  IconButton(
-                    onPressed: _openInGoogle,
-                    color: Colors.blue,
-                    icon: Icon(Icons.translate),
+                  OutlinedButton(
+                    onPressed: _toggleShowDie,
+                    child: SizedBox(
+                      width: 72,
+                      child: Center(
+                        child: Text(
+                          "Die",
+                          style: TextStyle(
+                            color: _showDie ? null : Colors.grey,
+                            decoration:
+                                _showDie ? null : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.check_circle),
-                    color: word.learned ? Colors.green : Colors.grey,
-                    onPressed: () {
-                      if (_indices.isNotEmpty) {
-                        setState(() {
-                          final json = word.toJson();
-                          json[Word.learnedKey] = !word.learned;
-                          json[Word.toLearnKey] = false;
-                          final newNoun = Noun.fromJson(json);
-                          final index = _indices[_index];
-                          final nouns = _getNouns();
-                          nouns[index] = newNoun;
-                          Database().saveSection('nouns');
-                        });
-                      }
-                    },
+                  OutlinedButton(
+                    onPressed: _toggleShowDas,
+                    child: SizedBox(
+                      width: 72,
+                      child: Center(
+                        child: Text(
+                          "Das",
+                          style: TextStyle(
+                            color: _showDas ? null : Colors.grey,
+                            decoration:
+                                _showDas ? null : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
+              SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutlinedButton(
+                    onPressed: _toggleShowArticle,
+                    child: SizedBox(
+                      width: buttonWidth,
+                      child: Center(
+                        child: Text(
+                          "Article",
+                          style: TextStyle(
+                            color: _showArticle ? null : Colors.grey,
+                            decoration: _showArticle
+                                ? null
+                                : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: _toggleShowWord,
+                    child: SizedBox(
+                      width: buttonWidth,
+                      child: Center(
+                        child: Text(
+                          "Word",
+                          style: TextStyle(
+                            color: _showWord ? null : Colors.grey,
+                            decoration:
+                                _showWord ? null : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: _toggleShowPlural,
+                    child: SizedBox(
+                      width: buttonWidth,
+                      child: Center(
+                        child: Text(
+                          "Plural",
+                          style: TextStyle(
+                            color: _showPlural ? null : Colors.grey,
+                            decoration:
+                                _showPlural ? null : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: _toggleShowTranslation,
+                    child: SizedBox(
+                      width: buttonWidth,
+                      child: Center(
+                        child: Text(
+                          "Meaning",
+                          style: TextStyle(
+                            color: _showTranslation ? null : Colors.grey,
+                            decoration: _showTranslation
+                                ? null
+                                : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 64),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: _prevWord,
+                    child: SizedBox(
+                      height: 64,
+                      child: Center(
+                        child: Text("PREV"),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _nextWord,
+                    child: SizedBox(
+                      height: 64,
+                      child: Center(
+                        child: Text("NEXT"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 64),
             ],
-            SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                  onPressed: _toggleShowDer,
-                  child: SizedBox(
-                    width: 72,
-                    child: Center(
-                      child: Text(
-                        "Der",
-                        style: TextStyle(
-                          color: _showDer ? null : Colors.grey,
-                          decoration:
-                              _showDer ? null : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleShowDie,
-                  child: SizedBox(
-                    width: 72,
-                    child: Center(
-                      child: Text(
-                        "Die",
-                        style: TextStyle(
-                          color: _showDie ? null : Colors.grey,
-                          decoration:
-                              _showDie ? null : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleShowDas,
-                  child: SizedBox(
-                    width: 72,
-                    child: Center(
-                      child: Text(
-                        "Das",
-                        style: TextStyle(
-                          color: _showDas ? null : Colors.grey,
-                          decoration:
-                              _showDas ? null : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                  onPressed: _toggleShowArticle,
-                  child: SizedBox(
-                    width: buttonWidth,
-                    child: Center(
-                      child: Text(
-                        "Article",
-                        style: TextStyle(
-                          color: _showArticle ? null : Colors.grey,
-                          decoration:
-                              _showArticle ? null : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleShowWord,
-                  child: SizedBox(
-                    width: buttonWidth,
-                    child: Center(
-                      child: Text(
-                        "Word",
-                        style: TextStyle(
-                          color: _showWord ? null : Colors.grey,
-                          decoration:
-                              _showWord ? null : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleShowPlural,
-                  child: SizedBox(
-                    width: buttonWidth,
-                    child: Center(
-                      child: Text(
-                        "Plural",
-                        style: TextStyle(
-                          color: _showPlural ? null : Colors.grey,
-                          decoration:
-                              _showPlural ? null : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleShowTranslation,
-                  child: SizedBox(
-                    width: buttonWidth,
-                    child: Center(
-                      child: Text(
-                        "Meaning",
-                        style: TextStyle(
-                          color: _showTranslation ? null : Colors.grey,
-                          decoration: _showTranslation
-                              ? null
-                              : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 64),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _prevWord,
-                  child: SizedBox(
-                    height: 64,
-                    child: Center(
-                      child: Text("PREV"),
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: _nextWord,
-                  child: SizedBox(
-                    height: 64,
-                    child: Center(
-                      child: Text("NEXT"),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 64),
-          ],
+          ),
         ),
       ),
     );

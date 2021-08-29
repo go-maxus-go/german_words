@@ -94,134 +94,137 @@ class _CommonScreenState extends State<CommonScreen> {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (word != null) ...[
-              Text(
-                "${word.word}",
-                style: theme.textTheme.headline5?.copyWith(
-                  color: _showWord ? null : Color(0),
+        child: Container(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (word != null) ...[
+                Text(
+                  "${word.word}",
+                  style: theme.textTheme.headline5?.copyWith(
+                    color: _showWord ? null : Color(0),
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                "${word.translation}",
-                style: theme.textTheme.subtitle1?.copyWith(
-                  color: _showTranslation ? null : Color(0),
+                SizedBox(height: 8),
+                Text(
+                  "${word.translation}",
+                  style: theme.textTheme.subtitle1?.copyWith(
+                    color: _showTranslation ? null : Color(0),
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.school),
+                      color: word.toLearn ? Colors.red : Colors.grey,
+                      onPressed: () {
+                        if (_indices.isNotEmpty) {
+                          setState(() {
+                            final json = word.toJson();
+                            json[Word.toLearnKey] = !word.toLearn;
+                            json[Word.learnedKey] = false;
+                            final newWord = Word.fromJson(json);
+                            final index = _indices[_index];
+                            _getWords()[index] = newWord;
+                            Database().saveSection(widget.section);
+                          });
+                        }
+                      },
+                    ),
+                    IconButton(
+                      onPressed: _openInGoogle,
+                      color: Colors.blue,
+                      icon: Icon(Icons.translate),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.check_circle),
+                      color: word.learned ? Colors.green : Colors.grey,
+                      onPressed: () {
+                        if (_indices.isNotEmpty) {
+                          setState(() {
+                            final json = word.toJson();
+                            json[Word.learnedKey] = !word.learned;
+                            json[Word.toLearnKey] = false;
+                            final newWord = Word.fromJson(json);
+                            final index = _indices[_index];
+                            _getWords()[index] = newWord;
+                            Database().saveSection(widget.section);
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
+              SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.school),
-                    color: word.toLearn ? Colors.red : Colors.grey,
-                    onPressed: () {
-                      if (_indices.isNotEmpty) {
-                        setState(() {
-                          final json = word.toJson();
-                          json[Word.toLearnKey] = !word.toLearn;
-                          json[Word.learnedKey] = false;
-                          final newWord = Word.fromJson(json);
-                          final index = _indices[_index];
-                          _getWords()[index] = newWord;
-                          Database().saveSection(widget.section);
-                        });
-                      }
-                    },
+                  OutlinedButton(
+                    onPressed: _toggleShowWord,
+                    child: SizedBox(
+                      width: buttonWidth,
+                      child: Center(
+                        child: Text(
+                          "Word",
+                          style: TextStyle(
+                            color: _showWord ? null : Colors.grey,
+                            decoration:
+                                _showWord ? null : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  IconButton(
-                    onPressed: _openInGoogle,
-                    color: Colors.blue,
-                    icon: Icon(Icons.translate),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.check_circle),
-                    color: word.learned ? Colors.green : Colors.grey,
-                    onPressed: () {
-                      if (_indices.isNotEmpty) {
-                        setState(() {
-                          final json = word.toJson();
-                          json[Word.learnedKey] = !word.learned;
-                          json[Word.toLearnKey] = false;
-                          final newWord = Word.fromJson(json);
-                          final index = _indices[_index];
-                          _getWords()[index] = newWord;
-                          Database().saveSection(widget.section);
-                        });
-                      }
-                    },
+                  OutlinedButton(
+                    onPressed: _toggleShowTranslation,
+                    child: SizedBox(
+                      width: buttonWidth,
+                      child: Center(
+                        child: Text(
+                          "Meaning",
+                          style: TextStyle(
+                            color: _showTranslation ? null : Colors.grey,
+                            decoration: _showTranslation
+                                ? null
+                                : TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
+              SizedBox(height: 64),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: _prevWord,
+                    child: SizedBox(
+                      height: 64,
+                      child: Center(
+                        child: Text("PREV"),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _nextWord,
+                    child: SizedBox(
+                      height: 64,
+                      child: Center(
+                        child: Text("NEXT"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 64),
             ],
-            SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                  onPressed: _toggleShowWord,
-                  child: SizedBox(
-                    width: buttonWidth,
-                    child: Center(
-                      child: Text(
-                        "Word",
-                        style: TextStyle(
-                          color: _showWord ? null : Colors.grey,
-                          decoration:
-                              _showWord ? null : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: _toggleShowTranslation,
-                  child: SizedBox(
-                    width: buttonWidth,
-                    child: Center(
-                      child: Text(
-                        "Meaning",
-                        style: TextStyle(
-                          color: _showTranslation ? null : Colors.grey,
-                          decoration: _showTranslation
-                              ? null
-                              : TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 64),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _prevWord,
-                  child: SizedBox(
-                    height: 64,
-                    child: Center(
-                      child: Text("PREV"),
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: _nextWord,
-                  child: SizedBox(
-                    height: 64,
-                    child: Center(
-                      child: Text("NEXT"),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 64),
-          ],
+          ),
         ),
       ),
     );
