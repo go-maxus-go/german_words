@@ -33,7 +33,6 @@ class _NounsScreenState extends State<NounsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final buttonWidth = 56.0;
 
     final words = Database().sections['nouns']!;
     Noun? word = _indices.isNotEmpty ? words[_indices[_index]] : null;
@@ -236,7 +235,6 @@ class _NounsScreenState extends State<NounsScreen> {
                   OutlinedButton(
                     onPressed: _toggleShowArticle,
                     child: SizedBox(
-                      width: buttonWidth,
                       child: Center(
                         child: Text(
                           "Article",
@@ -253,7 +251,6 @@ class _NounsScreenState extends State<NounsScreen> {
                   OutlinedButton(
                     onPressed: _toggleShowWord,
                     child: SizedBox(
-                      width: buttonWidth,
                       child: Center(
                         child: Text(
                           "Word",
@@ -269,7 +266,6 @@ class _NounsScreenState extends State<NounsScreen> {
                   OutlinedButton(
                     onPressed: _toggleShowPlural,
                     child: SizedBox(
-                      width: buttonWidth,
                       child: Center(
                         child: Text(
                           "Plural",
@@ -285,7 +281,6 @@ class _NounsScreenState extends State<NounsScreen> {
                   OutlinedButton(
                     onPressed: _toggleShowTranslation,
                     child: SizedBox(
-                      width: buttonWidth,
                       child: Center(
                         child: Text(
                           "Meaning",

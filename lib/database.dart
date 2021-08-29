@@ -136,7 +136,16 @@ class Database {
   }
 
   Future<void> _loadSection(String section) async {
-    final text = await rootBundle.loadString('res/$section.txt');
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path + '/' + section + '.txt';
+    final file = File(path);
+
+    String text;
+    if (file.existsSync()) {
+      text = file.readAsStringSync();
+    } else {
+      text = await rootBundle.loadString('res/nouns.txt');
+    }
     final json = jsonDecode(text);
 
     final List<Word> words = [];
