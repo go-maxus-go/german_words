@@ -144,7 +144,7 @@ class Database {
     if (file.existsSync()) {
       text = file.readAsStringSync();
     } else {
-      text = await rootBundle.loadString('res/nouns.txt');
+      text = await rootBundle.loadString('res/' + section + '.txt');
     }
     final json = jsonDecode(text);
 
