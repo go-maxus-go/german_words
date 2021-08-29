@@ -105,6 +105,7 @@ class _CommonScreenState extends State<CommonScreen> {
                   style: theme.textTheme.headline5?.copyWith(
                     color: _showWord ? null : Color(0),
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -112,6 +113,7 @@ class _CommonScreenState extends State<CommonScreen> {
                   style: theme.textTheme.subtitle1?.copyWith(
                     color: _showTranslation ? null : Color(0),
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8),
                 Row(
