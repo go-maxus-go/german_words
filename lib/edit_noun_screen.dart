@@ -35,10 +35,10 @@ class _EditNounScreenState extends State<EditNounScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              _saveChanges();
+              _deleteWord();
               Navigator.of(context).pop();
             },
-            icon: Icon(Icons.check),
+            icon: Icon(Icons.delete),
           ),
         ],
       ),
@@ -58,10 +58,10 @@ class _EditNounScreenState extends State<EditNounScreen> {
             SizedBox(height: 64),
             ElevatedButton(
               onPressed: () {
-                _deleteWord();
+                _saveChanges();
                 Navigator.of(context).pop();
               },
-              child: Text("DELETE"),
+              child: Text("SAVE"),
             ),
           ],
         ),

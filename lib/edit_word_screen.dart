@@ -33,10 +33,10 @@ class _EditWordScreenState extends State<EditWordScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              _saveChanges();
+              _deleteWord();
               Navigator.of(context).pop();
             },
-            icon: Icon(Icons.check),
+            icon: Icon(Icons.delete),
           ),
         ],
       ),
@@ -52,10 +52,10 @@ class _EditWordScreenState extends State<EditWordScreen> {
             SizedBox(height: 64),
             ElevatedButton(
               onPressed: () {
-                _deleteWord();
+                _saveChanges();
                 Navigator.of(context).pop();
               },
-              child: Text("DELETE"),
+              child: Text("SAVE"),
             ),
           ],
         ),
@@ -67,9 +67,9 @@ class _EditWordScreenState extends State<EditWordScreen> {
     final json = widget.word.toJson();
     json[Word.wordKey] = _wordCtrl.text;
     json[Word.translationKey] = _translationCtrl.text;
-    final newNoun = Noun.fromJson(json);
+    final newWord = Word.fromJson(json);
     final words = Database().sections[widget.section]!;
-    words[widget.index] = newNoun;
+    words[widget.index] = newWord;
     Database().saveSection(widget.section);
   }
 
